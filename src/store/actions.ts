@@ -1,10 +1,8 @@
-export const BOX_ADDED = 'BOX_ADDED';
-export const BOX_REMOVED = 'BOX_REMOVE';
-export const BOX_EDIT = 'BOX_EDIT';
-
 export enum ActionTypes {
   BoxAdded = 'BOX_ADDED',
   BoxRemoved = 'BOX_REMOVED',
+  BoxSelected = 'BOX_SELECTED',
+  BoxUpdated = 'BOX_UPDATED',
 }
 
 interface Payload {
@@ -21,6 +19,20 @@ interface BoxRemoved {
   type: typeof ActionTypes.BoxRemoved;
 }
 
+interface BoxSelectedInterface {
+  boxNumber: number;
+}
+
+interface BoxSelected {
+  type: typeof ActionTypes.BoxSelected;
+  payload: BoxSelectedInterface;
+}
+
+interface BoxUpdated {
+  type: typeof ActionTypes.BoxUpdated;
+  payload: Payload;
+}
+
 export const boxAdded = (payload: Payload): BoxAdded => ({
   type: ActionTypes.BoxAdded,
   payload,
@@ -30,4 +42,14 @@ export const boxRemoved = (): BoxRemoved => ({
   type: ActionTypes.BoxRemoved,
 });
 
-export type BoxAction = BoxAdded | BoxRemoved;
+export const boxSelected = (payload: BoxSelectedInterface): BoxSelected => ({
+  type: ActionTypes.BoxSelected,
+  payload,
+});
+
+export const boxUpdated = (payload: Payload): BoxUpdated => ({
+  type: ActionTypes.BoxUpdated,
+  payload,
+});
+
+export type BoxAction = BoxAdded | BoxRemoved | BoxSelected | BoxUpdated;

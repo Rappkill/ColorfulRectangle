@@ -41,6 +41,35 @@ export default function BoxReducer(
         ],
       };
 
+    case ActionTypes.BoxSelected:
+      return {
+        ...state,
+        boxSelected: { ...state.boxList[action.payload.boxNumber - 1] },
+      };
+
+    case ActionTypes.BoxUpdated:
+      const boxIdSelected = state.boxList.findIndex(
+        (box) => box.id == state.boxSelected?.id
+      );
+
+      return {
+        ...state,
+
+        boxSelected: null,
+
+        boxList: [
+          ...state.boxList.slice(0, boxIdSelected),
+
+          {
+            ...state.boxList[boxIdSelected],
+
+            ...action.payload,
+          },
+
+          ...state.boxList.slice(boxIdSelected + 1),
+        ],
+      };
+
     default:
       return state;
   }
@@ -48,4 +77,8 @@ export default function BoxReducer(
 
 export const getBoxList = (store: Store): BoxRGB[] => {
   return store.boxList;
+};
+
+export const getSelectedBox = (store: Store): null | BoxRGB => {
+  return store.boxSelected;
 };

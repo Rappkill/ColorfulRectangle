@@ -1,10 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { boxSelected } from '../store/actions';
 import { getBoxList } from '../store/reducers';
 
 export function BoxList(): JSX.Element {
   const boxItems = useSelector(getBoxList);
-  console.log(boxItems);
+
+  const dispatch = useDispatch();
+
+  const handleInsert = useCallback((boxNumber) => {
+    dispatch(boxSelected(boxNumber));
+  }, []);
 
   return (
     <div className="box-list">
@@ -17,6 +23,8 @@ export function BoxList(): JSX.Element {
             style={{
               backgroundColor: `rgb(${box.red}, ${box.green}, ${box.blue})`,
             }}
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={() => handleInsert({ boxNumber: box.boxNumber })}
           >
             {box.red}
           </div>

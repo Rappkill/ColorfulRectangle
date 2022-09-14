@@ -13,7 +13,7 @@ export function BoxInserter(): JSX.Element {
   } = useForm();
 
   function throwError() {
-    let redInput = watch('Red');
+    const redInput = watch('Red');
 
     console.log(redInput);
     if (redInput > '255') {
@@ -40,14 +40,21 @@ export function BoxInserter(): JSX.Element {
   );
 
   const handleRandom = useCallback(() => {
-    console.log('hit');
-  }, []);
+    store.dispatch(
+      boxAdded({
+        red: Math.floor(Math.random() * 256).toString(),
+        green: Math.floor(Math.random() * 256).toString(),
+        blue: Math.floor(Math.random() * 256).toString(),
+      })
+    );
+  }, [boxAdded]);
 
   return (
     <div className="box-insert">
+      Box inserter
       <form onSubmit={handleSubmit(onSubmit)} className="form-wrapper">
         <span className="input-field">
-          R
+          R :
           <input
             defaultValue=""
             placeholder="Red Field"
@@ -55,28 +62,27 @@ export function BoxInserter(): JSX.Element {
           />
         </span>
         <span className="input-field">
-          G
+          G :
           <input
             placeholder="Green Field"
             {...register('Green', { required: true })}
           />
         </span>
         <span className="input-field">
-          B
+          B :
           <input
             placeholder="Blue Field"
             {...register('Blue', { required: true })}
           />
         </span>
-        {errors.Green && <span>This field is required</span>}
-        {errors.Red && <span>This field is required</span>}
+        {/* {errors.Green && <span>This field is required</span>}
+        {errors.Red && <span>This field is required</span>} */}
         <button type="submit" className="submit-button">
           Insert
         </button>
-        <button className="random-button" onClick={handleRandom}>
+        <button type="button" className="random-button" onClick={handleRandom}>
           Insert Random
         </button>
-        {/* // <input type="submit" className="submit-button" /> */}
       </form>
     </div>
   );

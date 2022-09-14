@@ -7,8 +7,10 @@ import { BoxList } from './components/BoxList';
 function App(): JSX.Element {
   return (
     <div className="app-wrapper">
-      <BoxInserter />
-      <BoxEdit />
+      <div className="inserter-wrapper">
+        <BoxInserter />
+        <BoxEdit />
+      </div>
       <BoxList />
     </div>
   );
