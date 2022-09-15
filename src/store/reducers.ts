@@ -12,12 +12,12 @@ interface BoxRGB {
 
 interface Store {
   boxList: BoxRGB[];
-  boxSelected: null | BoxRGB;
+  selectedBoxId: null | string;
 }
 
 const initialState: Store = {
   boxList: [],
-  boxSelected: null,
+  selectedBoxId: null,
 };
 
 export default function BoxReducer(
@@ -44,29 +44,26 @@ export default function BoxReducer(
     case ActionTypes.BoxSelected:
       return {
         ...state,
-        boxSelected: { ...state.boxList[action.payload.boxNumber - 1] },
+        selectedBoxId: action.payload,
       };
 
     case ActionTypes.BoxUpdated:
-      const boxIdSelected = state.boxList.findIndex(
-        (box) => box.id == state.boxSelected?.id
-      );
-
       return {
         ...state,
 
-        boxSelected: null,
-
         boxList: [
-          ...state.boxList.slice(0, boxIdSelected),
+          ...state.boxList.map((box) => {
+            if (box.id !== state.selectedBoxId) {
+              return box;
+            }
 
-          {
-            ...state.boxList[boxIdSelected],
-
-            ...action.payload,
-          },
-
-          ...state.boxList.slice(boxIdSelected + 1),
+            return {
+              ...box,
+              red: action.payload.red,
+              blue: action.payload.blue,
+              green: action.payload.green,
+            };
+          }),
         ],
       };
 
@@ -80,5 +77,13 @@ export const getBoxList = (store: Store): BoxRGB[] => {
 };
 
 export const getSelectedBox = (store: Store): null | BoxRGB => {
-  return store.boxSelected;
+  return store.boxList.find((b) => b.id === store.selectedBoxId) || null;
+};
+
+export const getSelectedBoxIndex = (store: Store): number => {
+  return store.boxList.findIndex((box) => box.id === store.selectedBoxId);
+};
+
+export const isMax = (store: Store): boolean => {
+  return store.boxList.length === 6;
 };

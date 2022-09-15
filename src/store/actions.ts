@@ -19,13 +19,9 @@ interface BoxRemoved {
   type: typeof ActionTypes.BoxRemoved;
 }
 
-interface BoxSelectedInterface {
-  boxNumber: number;
-}
-
 interface BoxSelected {
   type: typeof ActionTypes.BoxSelected;
-  payload: BoxSelectedInterface;
+  payload: string;
 }
 
 interface BoxUpdated {
@@ -42,7 +38,7 @@ export const boxRemoved = (): BoxRemoved => ({
   type: ActionTypes.BoxRemoved,
 });
 
-export const boxSelected = (payload: BoxSelectedInterface): BoxSelected => ({
+export const boxSelected = (payload: string): BoxSelected => ({
   type: ActionTypes.BoxSelected,
   payload,
 });

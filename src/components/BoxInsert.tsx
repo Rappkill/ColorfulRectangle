@@ -2,6 +2,9 @@ import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { boxAdded } from '../store/actions';
 import store from '../store/store';
+import { useSelector } from 'react-redux';
+import { isMax } from '../store/reducers';
+import { generateRGBValues } from '../services/colorfulService';
 
 export function BoxInserter(): JSX.Element {
   const {
@@ -12,19 +15,26 @@ export function BoxInserter(): JSX.Element {
     formState: { errors },
   } = useForm();
 
-  function throwError() {
-    const redInput = watch('Red');
+  const maxLength = useSelector(isMax);
+  // function throwError() {
+  //   const redInput = watch('Red');
 
-    console.log(redInput);
-    if (redInput > '255') {
-      console.log('hit');
+  //   console.log(redInput);
+  //   if (redInput > '255') {
+  //     console.log('hit');
 
-      return 'Insert Valid Value';
-    }
-  }
+  //     return 'Insert Valid Value';
+  //   }
+  // }
 
   const onSubmit = useCallback(
     (data) => {
+      console.log('onSubmit ' + maxLength);
+
+      if (maxLength) {
+        return;
+      }
+
       store.dispatch(
         boxAdded({
           red: data.Red,
@@ -32,57 +42,71 @@ export function BoxInserter(): JSX.Element {
           blue: data.Blue,
         })
       );
-
       reset();
-      throwError();
+      // throwError();
     },
-    [boxAdded]
+    [reset, maxLength]
   );
 
   const handleRandom = useCallback(() => {
+    console.log('handleRandom ' + maxLength);
+
+    if (maxLength) {
+      return;
+    }
+    const RGBValue = generateRGBValues();
     store.dispatch(
       boxAdded({
-        red: Math.floor(Math.random() * 256).toString(),
-        green: Math.floor(Math.random() * 256).toString(),
-        blue: Math.floor(Math.random() * 256).toString(),
+        red: RGBValue.red,
+        green: RGBValue.green,
+        blue: RGBValue.blue,
       })
     );
-  }, [boxAdded]);
+  }, [maxLength]);
 
   return (
-    <div className="box-insert">
-      Box inserter
+    <div className="box-insert-wrapper">
+      <div id="box-insert-text"> Box inserter </div>
       <form onSubmit={handleSubmit(onSubmit)} className="form-wrapper">
-        <span className="input-field">
-          R :
-          <input
-            defaultValue=""
-            placeholder="Red Field"
-            {...register('Red', { required: true })}
-          />
-        </span>
-        <span className="input-field">
-          G :
-          <input
-            placeholder="Green Field"
-            {...register('Green', { required: true })}
-          />
-        </span>
-        <span className="input-field">
-          B :
-          <input
-            placeholder="Blue Field"
-            {...register('Blue', { required: true })}
-          />
-        </span>
+        <div className="input-wrapper">
+          <span className="input-field">
+            R :
+            <input
+              defaultValue=""
+              placeholder="Red Field"
+              {...register('Red', { required: true })}
+            />
+          </span>
+          <span className="input-field">
+            G :
+            <input
+              placeholder="Green Field"
+              {...register('Green', { required: true })}
+            />
+          </span>
+          <span className="input-field">
+            B :
+            <input
+              placeholder="Blue Field"
+              {...register('Blue', { required: true })}
+            />
+          </span>
+        </div>
+
         {/* {errors.Green && <span>This field is required</span>}
         {errors.Red && <span>This field is required</span>} */}
-        <button type="submit" className="submit-button">
-          Insert
-        </button>
-        <button type="button" className="random-button" onClick={handleRandom}>
-          Insert Random
-        </button>
+        <div className="submit-button-wrapper">
+          <button type="submit" className="submit-button">
+            Insert
+          </button>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={handleRandom}
+          >
+            Insert Random
+          </button>
+        </div>
       </form>
     </div>
   );
