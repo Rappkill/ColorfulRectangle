@@ -182,7 +182,8 @@ input {
   height: 6rem;
   width: 7rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: end;
 }
 
 .box-edit-wrapper {
@@ -203,20 +204,92 @@ input {
   justify-content: space-between;
   align-items: center;
 }
+
 .box-number {
   align-self: center;
 }
 
-#info-button {
-  text-align: start;
+.info-button {
+  text-align: center;
   font-style: italic;
   font-size: 15px;
-  width: 50px;
-
+  width: 40%;
+  height: 25%;
   border-radius: 70px;
-  background-color: rgb(3, 3, 3);
-  color: #ffffff;
+  border-color: 0.1px;
+  background-color: rgb(174, 168, 168);
+  color: #7b5d17ae;
   cursor: pointer;
+}
+
+.active {
+  /* color: rgb(255, 0, 242); */
+  display: none;
+}
+
+.info-wrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.info-modal {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #e7c26c;
+  color: black;
+  z-index: 2;
+  position: absolute;
+  top: 50vh;
+  right: 50vw;
+  transform: translate(50%, -50%);
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  font-size: small;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#modal-button {
+  width: 30%;
+  background-color: rgb(244, 102, 102);
+  cursor: pointer;
+}
+
+.modal-rgb {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 1em;
+  /* align-items: center; */
+}
+
+#close {
+  background-color: red;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */

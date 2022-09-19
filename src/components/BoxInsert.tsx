@@ -4,23 +4,23 @@ import { boxAdded } from '../store/actions';
 import store from '../store/store';
 import { useSelector } from 'react-redux';
 import { isMax } from '../store/reducers';
-import { generateRGBValues } from '../services/colorfulService';
+import { generateRGBValues, schema } from '../services/colorfulService';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export function BoxInserter(): JSX.Element {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const maxLength = useSelector(isMax);
 
   const onSubmit = useCallback(
     (data) => {
-      console.log('onSubmit ' + maxLength);
-
       if (maxLength) {
         return;
       }
@@ -61,29 +61,33 @@ export function BoxInserter(): JSX.Element {
           <span className="input-field">
             R :
             <input
-              defaultValue=""
+              type="number"
               placeholder="Red Field"
               {...register('Red', { required: true })}
             />
+            {errors.Red && <span>{errors.Red.message}</span>}
           </span>
           <span className="input-field">
             G :
             <input
+              type="number"
               placeholder="Green Field"
-              {...register('Green', { required: true })}
+              {...register('Green', {
+                required: true,
+              })}
             />
+            {errors.Green && <span>{errors.Green.message}</span>}
           </span>
           <span className="input-field">
             B :
             <input
+              type="number"
               placeholder="Blue Field"
               {...register('Blue', { required: true })}
             />
+            {errors.Blue && <span>{errors.Blue.message}</span>}
           </span>
         </div>
-
-        {/* {errors.Green && <span>This field is required</span>}
-        {errors.Red && <span>This field is required</span>} */}
         <div className="submit-button-wrapper">
           <button type="submit" className="submit-button">
             Insert

@@ -67,6 +67,13 @@ export default function BoxReducer(
         ],
       };
 
+    case ActionTypes.BoxRemoved:
+      return {
+        ...state,
+
+        boxList: state.boxList.filter((box) => box.id !== state.selectedBoxId),
+      };
+
     default:
       return state;
   }
