@@ -16,16 +16,6 @@ export function BoxInserter(): JSX.Element {
   } = useForm();
 
   const maxLength = useSelector(isMax);
-  // function throwError() {
-  //   const redInput = watch('Red');
-
-  //   console.log(redInput);
-  //   if (redInput > '255') {
-  //     console.log('hit');
-
-  //     return 'Insert Valid Value';
-  //   }
-  // }
 
   const onSubmit = useCallback(
     (data) => {
@@ -43,7 +33,6 @@ export function BoxInserter(): JSX.Element {
         })
       );
       reset();
-      // throwError();
     },
     [reset, maxLength]
   );

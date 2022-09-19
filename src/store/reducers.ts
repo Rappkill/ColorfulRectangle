@@ -85,5 +85,5 @@ export const getSelectedBoxIndex = (store: Store): number => {
 };
 
 export const isMax = (store: Store): boolean => {
-  return store.boxList.length === 6;
+  return store.boxList.length === 9;
 };
