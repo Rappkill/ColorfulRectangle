@@ -48,28 +48,17 @@ export function BoxEdit(): JSX.Element {
     setInfoActive(true);
   }, []);
 
-  const handleCloseInfo = useCallback(() => {
-    setInfoActive(false);
-  }, []);
-
   const handleValues = useCallback(() => {
     setDefaultValues(getValues());
-    console.log(defaultValues);
   }, [defaultValues]);
 
   return (
     <div className="box-edit">
       <div id="box-edit-text">Color Editor</div>
 
-      {isInfoActive ? (
-        <div className="info-wrapper" onClick={handleCloseInfo}>
-          <div className="info-modal">
-            <Modal setInfo={setInfoActive} />
-          </div>
-        </div>
-      ) : null}
+      {isInfoActive && <Modal setInfo={setInfoActive} />}
 
-      {selectedBox ? (
+      {selectedBox && (
         <div className="box-edit-wrapper">
           <div className="selected-box-wrapper">
             <div
@@ -126,7 +115,6 @@ export function BoxEdit(): JSX.Element {
                 <button
                   type="submit"
                   className="submit-button"
-                  // eslint-disable-next-line react/jsx-no-bind
                   onClick={handleValues}
                 >
                   Apply color
@@ -135,7 +123,7 @@ export function BoxEdit(): JSX.Element {
             </div>
           </form>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
